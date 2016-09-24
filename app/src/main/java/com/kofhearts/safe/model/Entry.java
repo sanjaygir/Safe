@@ -65,6 +65,8 @@ public class Entry {
 
     public static int getTotalCount(){
 
+
+
         String countQuery = "SELECT * FROM " + SafeDbHelper.SQL_ENTRY_TABLE_NAME;
 
         Cursor cursor = readableDatabase.rawQuery(countQuery, null);
@@ -112,6 +114,7 @@ public class Entry {
     }
 
     public int save(){
+
 
         ContentValues values = new ContentValues();
 
