@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.kofhearts.safe.data.SafeDbHelper;
-import com.kofhearts.safe.data.SafeDbHelperReal;
-import com.kofhearts.safe.data.SafeDbHelperTest;
 
 /**
  *
@@ -31,22 +29,10 @@ public abstract class ActiveRecord {
 
         if(context != null) {
 
-            if(test){
+            dbHelper = new SafeDbHelper(context, test);
 
-                dbHelper = new SafeDbHelperTest(context);
-
-                readableDatabase = ((SafeDbHelperTest)dbHelper).getReadableDatabase();
-                writableDatabase = ((SafeDbHelperTest)dbHelper).getWritableDatabase();
-
-            }
-            else{
-
-                dbHelper = new SafeDbHelperReal(context);
-
-                readableDatabase = ((SafeDbHelperReal)dbHelper).getReadableDatabase();
-                writableDatabase = ((SafeDbHelperReal)dbHelper).getWritableDatabase();
-
-            }
+            readableDatabase = dbHelper.getReadableDatabase();
+            writableDatabase = dbHelper.getWritableDatabase();
 
 
         }

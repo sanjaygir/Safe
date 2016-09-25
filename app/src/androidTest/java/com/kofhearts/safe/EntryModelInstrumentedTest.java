@@ -5,8 +5,7 @@ import android.database.Cursor;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.kofhearts.safe.data.SafeDbHelperReal;
-import com.kofhearts.safe.data.SafeDbHelperTest;
+import com.kofhearts.safe.data.SafeDbHelper;
 import com.kofhearts.safe.exception.NoRecordFoundException;
 import com.kofhearts.safe.model.ActiveRecord;
 import com.kofhearts.safe.model.Entry;
@@ -33,7 +32,7 @@ public class EntryModelInstrumentedTest {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        appContext.deleteDatabase(SafeDbHelperTest.DATABASE_NAME);
+        appContext.deleteDatabase(SafeDbHelper.DATABASE_NAME_TEST);
 
         ActiveRecord.initialize(appContext, true);
 
@@ -43,7 +42,7 @@ public class EntryModelInstrumentedTest {
     public void tearDown(){
 
         Context appContext = InstrumentationRegistry.getTargetContext();
-        appContext.deleteDatabase(SafeDbHelperTest.DATABASE_NAME);
+        appContext.deleteDatabase(SafeDbHelper.DATABASE_NAME_TEST);
 
     }
 
@@ -56,7 +55,7 @@ public class EntryModelInstrumentedTest {
         assertEquals(Entry.getTotalCount(), 1);
 
 
-        Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, null);
+        Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelper.SQL_ENTRY_TABLE_NAME, null);
         int count = cursor.getCount();
         cursor.close();
         assertEquals(count, 1);
@@ -80,7 +79,7 @@ public class EntryModelInstrumentedTest {
 
 
 
-        Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, null);
+        Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelper.SQL_ENTRY_TABLE_NAME, null);
         int count = cursor.getCount();
         cursor.close();
         assertEquals(count, 2);
@@ -106,7 +105,7 @@ public class EntryModelInstrumentedTest {
         assertEquals(Entry.getTotalCount(), 3);
 
 
-        Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, null);
+        Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelper.SQL_ENTRY_TABLE_NAME, null);
         int count = cursor.getCount();
         cursor.close();
         assertEquals(count, 3);
@@ -131,7 +130,7 @@ public class EntryModelInstrumentedTest {
         assertEquals(Entry.getTotalCount(), 1);
 
 
-        Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, null);
+        Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelper.SQL_ENTRY_TABLE_NAME, null);
         int count = cursor.getCount();
         cursor.close();
         assertEquals(count, 1);
@@ -159,7 +158,7 @@ public class EntryModelInstrumentedTest {
         assertEquals(Entry.getTotalCount(), 1);
 
 
-        Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, null);
+        Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelper.SQL_ENTRY_TABLE_NAME, null);
         int count = cursor.getCount();
         cursor.close();
         assertEquals(count, 1);
@@ -180,7 +179,7 @@ public class EntryModelInstrumentedTest {
         assertEquals(Entry.getTotalCount(), 0);
 
 
-        Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, null);
+        Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelper.SQL_ENTRY_TABLE_NAME, null);
         int count = cursor.getCount();
         cursor.close();
         assertEquals(count, 0);

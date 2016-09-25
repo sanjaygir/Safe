@@ -3,7 +3,7 @@ package com.kofhearts.safe.model;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.kofhearts.safe.data.SafeDbHelperReal;
+import com.kofhearts.safe.data.SafeDbHelper;
 import com.kofhearts.safe.exception.NoRecordFoundException;
 
 /**
@@ -55,12 +55,13 @@ public class Entry extends ActiveRecord{
      *
      * @return Entry Total records in Entry table
      *
+     *
      */
 
 
     public static int getTotalCount(){
 
-        String countQuery = "SELECT * FROM " + SafeDbHelperReal.SQL_ENTRY_TABLE_NAME;
+        String countQuery = "SELECT * FROM " + SafeDbHelper.SQL_ENTRY_TABLE_NAME;
 
         Cursor cursor = readableDatabase.rawQuery(countQuery, null);
 
@@ -76,11 +77,11 @@ public class Entry extends ActiveRecord{
 
         ContentValues values = new ContentValues();
 
-        values.put(SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, title);
-        values.put(SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME, content);
+        values.put(SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, title);
+        values.put(SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME, content);
 
 
-        return writableDatabase.insert(SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, null, values);
+        return writableDatabase.insert(SafeDbHelper.SQL_ENTRY_TABLE_NAME, null, values);
 
     }
 
@@ -96,18 +97,18 @@ public class Entry extends ActiveRecord{
 
     public static Entry get(long id){
 
-        String [] columns = {SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
+        String [] columns = {SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
 
-        String selection = SafeDbHelperReal.SQL_ID_COLUMN_NAME + " = ?";
+        String selection = SafeDbHelper.SQL_ID_COLUMN_NAME + " = ?";
 
         String [] selectionArgs = {String.valueOf(id)};
 
-        Cursor cur = readableDatabase.query(SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+        Cursor cur = readableDatabase.query(SafeDbHelper.SQL_ENTRY_TABLE_NAME, columns, selection, selectionArgs, null, null, null);
 
         cur.moveToFirst();
 
-        String title = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME));
-        String content = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME));
+        String title = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME));
+        String content = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME));
 
         cur.close();
 
@@ -118,10 +119,10 @@ public class Entry extends ActiveRecord{
 
     public static Entry[] list(){
 
-        String [] columns = {SafeDbHelperReal.SQL_ID_COLUMN_NAME, SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
+        String [] columns = {SafeDbHelper.SQL_ID_COLUMN_NAME, SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
 
 
-        Cursor cur = readableDatabase.query(SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, columns, null, null, null, null, null);
+        Cursor cur = readableDatabase.query(SafeDbHelper.SQL_ENTRY_TABLE_NAME, columns, null, null, null, null, null);
 
         cur.moveToFirst();
 
@@ -131,9 +132,9 @@ public class Entry extends ActiveRecord{
 
         for(int i=0; i<size; i++){
 
-            long id = cur.getLong(cur.getColumnIndex(SafeDbHelperReal.SQL_ID_COLUMN_NAME));
-            String title = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME));
-            String content = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME));
+            long id = cur.getLong(cur.getColumnIndex(SafeDbHelper.SQL_ID_COLUMN_NAME));
+            String title = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME));
+            String content = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME));
 
 
             entries[i] = new Entry(id, title, content);
@@ -151,9 +152,9 @@ public class Entry extends ActiveRecord{
 
     public static Entry first() throws Exception{
 
-        String [] columns = {SafeDbHelperReal.SQL_ID_COLUMN_NAME, SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
+        String [] columns = {SafeDbHelper.SQL_ID_COLUMN_NAME, SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
 
-        Cursor cur = readableDatabase.query(SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, columns, null, null,null,null,"1");
+        Cursor cur = readableDatabase.query(SafeDbHelper.SQL_ENTRY_TABLE_NAME, columns, null, null,null,null,"1");
 
         cur.moveToFirst();
 
@@ -164,9 +165,9 @@ public class Entry extends ActiveRecord{
 
         }
 
-        long id = cur.getLong(cur.getColumnIndex(SafeDbHelperReal.SQL_ID_COLUMN_NAME));
-        String title = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME));
-        String content = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME));
+        long id = cur.getLong(cur.getColumnIndex(SafeDbHelper.SQL_ID_COLUMN_NAME));
+        String title = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME));
+        String content = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME));
 
         cur.close();
 
@@ -179,12 +180,12 @@ public class Entry extends ActiveRecord{
 
         ContentValues values = new ContentValues();
 
-        values.put(SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, this.title);
-        values.put(SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME, this.content);
+        values.put(SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, this.title);
+        values.put(SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME, this.content);
 
         String [] selectionArgs = {String.valueOf(this.id)};
 
-        return writableDatabase.update(SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, values, SafeDbHelperReal.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
+        return writableDatabase.update(SafeDbHelper.SQL_ENTRY_TABLE_NAME, values, SafeDbHelper.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
 
     }
 
@@ -192,7 +193,7 @@ public class Entry extends ActiveRecord{
 
         String [] selectionArgs = {String.valueOf(id)};
 
-        return writableDatabase.delete(SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, SafeDbHelperReal.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
+        return writableDatabase.delete(SafeDbHelper.SQL_ENTRY_TABLE_NAME, SafeDbHelper.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
 
     }
 

@@ -3,7 +3,7 @@ package com.kofhearts.safe.model;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.kofhearts.safe.data.SafeDbHelperReal;
+import com.kofhearts.safe.data.SafeDbHelper;
 import com.kofhearts.safe.exception.NoRecordFoundException;
 
 /**
@@ -40,7 +40,7 @@ public class Password extends ActiveRecord{
 
     public static int getTotalCount(){
 
-        String countQuery = "SELECT * FROM " + SafeDbHelperReal.SQL_PASSWORD_TABLE_NAME;
+        String countQuery = "SELECT * FROM " + SafeDbHelper.SQL_PASSWORD_TABLE_NAME;
 
         Cursor cursor = readableDatabase.rawQuery(countQuery, null);
 
@@ -55,9 +55,9 @@ public class Password extends ActiveRecord{
 
     public static Password first() throws Exception{
 
-        String [] columns = {SafeDbHelperReal.SQL_ID_COLUMN_NAME, SafeDbHelperReal.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME};
+        String [] columns = {SafeDbHelper.SQL_ID_COLUMN_NAME, SafeDbHelper.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME};
 
-        Cursor cur = readableDatabase.query(SafeDbHelperReal.SQL_PASSWORD_TABLE_NAME, columns, null, null,null,null,"1");
+        Cursor cur = readableDatabase.query(SafeDbHelper.SQL_PASSWORD_TABLE_NAME, columns, null, null,null,null,"1");
 
         cur.moveToFirst();
 
@@ -69,8 +69,8 @@ public class Password extends ActiveRecord{
         }
 
 
-        long id = cur.getLong(cur.getColumnIndex(SafeDbHelperReal.SQL_ID_COLUMN_NAME));
-        String password = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME));
+        long id = cur.getLong(cur.getColumnIndex(SafeDbHelper.SQL_ID_COLUMN_NAME));
+        String password = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME));
 
         cur.close();
 
@@ -82,27 +82,27 @@ public class Password extends ActiveRecord{
 
         ContentValues values = new ContentValues();
 
-        values.put(SafeDbHelperReal.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME, password);
+        values.put(SafeDbHelper.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME, password);
 
 
-        return writableDatabase.insert(SafeDbHelperReal.SQL_PASSWORD_TABLE_NAME, null, values);
+        return writableDatabase.insert(SafeDbHelper.SQL_PASSWORD_TABLE_NAME, null, values);
 
     }
 
 
     public static Password get(long id){
 
-        String [] columns = {SafeDbHelperReal.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME};
+        String [] columns = {SafeDbHelper.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME};
 
-        String selection = SafeDbHelperReal.SQL_ID_COLUMN_NAME + " = ?";
+        String selection = SafeDbHelper.SQL_ID_COLUMN_NAME + " = ?";
 
         String [] selectionArgs = {String.valueOf(id)};
 
-        Cursor cur = readableDatabase.query(SafeDbHelperReal.SQL_PASSWORD_TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+        Cursor cur = readableDatabase.query(SafeDbHelper.SQL_PASSWORD_TABLE_NAME, columns, selection, selectionArgs, null, null, null);
 
         cur.moveToFirst();
 
-        String password = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME));
+        String password = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME));
 
         cur.close();
 
@@ -116,11 +116,11 @@ public class Password extends ActiveRecord{
 
         ContentValues values = new ContentValues();
 
-        values.put(SafeDbHelperReal.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME, this.password);
+        values.put(SafeDbHelper.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME, this.password);
 
         String [] selectionArgs = {String.valueOf(this.id)};
 
-        return writableDatabase.update(SafeDbHelperReal.SQL_PASSWORD_TABLE_NAME, values, SafeDbHelperReal.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
+        return writableDatabase.update(SafeDbHelper.SQL_PASSWORD_TABLE_NAME, values, SafeDbHelper.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
 
     }
 
@@ -129,7 +129,7 @@ public class Password extends ActiveRecord{
 
         String [] selectionArgs = {String.valueOf(id)};
 
-        return writableDatabase.delete(SafeDbHelperReal.SQL_PASSWORD_TABLE_NAME, SafeDbHelperReal.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
+        return writableDatabase.delete(SafeDbHelper.SQL_PASSWORD_TABLE_NAME, SafeDbHelper.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
 
 
     }
@@ -138,9 +138,9 @@ public class Password extends ActiveRecord{
 
     public static Password[] list(){
 
-        String [] columns = {SafeDbHelperReal.SQL_ID_COLUMN_NAME, SafeDbHelperReal.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME};
+        String [] columns = {SafeDbHelper.SQL_ID_COLUMN_NAME, SafeDbHelper.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME};
 
-        Cursor cur = readableDatabase.query(SafeDbHelperReal.SQL_PASSWORD_TABLE_NAME, columns, null, null, null, null, null);
+        Cursor cur = readableDatabase.query(SafeDbHelper.SQL_PASSWORD_TABLE_NAME, columns, null, null, null, null, null);
 
         cur.moveToFirst();
 
@@ -150,8 +150,8 @@ public class Password extends ActiveRecord{
 
         for(int i=0; i<size; i++){
 
-            long id = cur.getLong(cur.getColumnIndex(SafeDbHelperReal.SQL_ID_COLUMN_NAME));
-            String password = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME));
+            long id = cur.getLong(cur.getColumnIndex(SafeDbHelper.SQL_ID_COLUMN_NAME));
+            String password = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME));
 
             entries[i] = new Password(id, password);
 
