@@ -95,7 +95,7 @@ public class Entry extends ActiveRecord{
      *
      */
 
-    public static Entry get(long id){
+    public static Entry get(long id) throws NoRecordFoundException{
 
         String [] columns = {SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
 
@@ -105,7 +105,16 @@ public class Entry extends ActiveRecord{
 
         Cursor cur = readableDatabase.query(SafeDbHelper.SQL_ENTRY_TABLE_NAME, columns, selection, selectionArgs, null, null, null);
 
+
         cur.moveToFirst();
+
+        if(cur.getCount() == 0){
+
+            cur.close();
+            throw new NoRecordFoundException("The table was empty so it doesn't have any items");
+
+        }
+
 
         String title = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME));
         String content = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME));
@@ -150,7 +159,7 @@ public class Entry extends ActiveRecord{
     }
 
 
-    public static Entry first() throws Exception{
+    public static Entry first() throws NoRecordFoundException{
 
         String [] columns = {SafeDbHelper.SQL_ID_COLUMN_NAME, SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
 

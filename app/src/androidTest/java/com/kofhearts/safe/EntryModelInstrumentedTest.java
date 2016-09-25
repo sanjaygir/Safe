@@ -64,7 +64,7 @@ public class EntryModelInstrumentedTest {
 
 
     @Test
-    public void testDeleteEntries(){
+    public void testDeleteEntries() throws Exception{
 
         assertEquals(Entry.getTotalCount(), 0);
 
@@ -76,7 +76,6 @@ public class EntryModelInstrumentedTest {
 
 
         assertEquals(Entry.getTotalCount(), 2);
-
 
 
         Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelper.SQL_ENTRY_TABLE_NAME, null);
@@ -115,7 +114,7 @@ public class EntryModelInstrumentedTest {
 
 
     @Test
-    public void testGet(){
+    public void testGet() throws Exception{
 
         assertEquals(Entry.getTotalCount(), 0);
 
@@ -129,17 +128,26 @@ public class EntryModelInstrumentedTest {
 
         assertEquals(Entry.getTotalCount(), 1);
 
-
         Cursor cursor = ActiveRecord.getReadableDatabase().rawQuery("SELECT * FROM " + SafeDbHelper.SQL_ENTRY_TABLE_NAME, null);
         int count = cursor.getCount();
         cursor.close();
         assertEquals(count, 1);
 
+
+        try {
+            Entry.get(1238723);
+            assertTrue(false);
+        }
+        catch(NoRecordFoundException e){
+            assertTrue(true);
+        }
+
+
     }
 
 
     @Test
-    public void testSave(){
+    public void testSave() throws Exception{
 
         assertEquals(Entry.getTotalCount(), 0);
 
@@ -166,7 +174,7 @@ public class EntryModelInstrumentedTest {
 
 
     @Test
-    public void testDelete(){
+    public void testDelete() throws Exception{
 
         assertEquals(Entry.getTotalCount(), 0);
 

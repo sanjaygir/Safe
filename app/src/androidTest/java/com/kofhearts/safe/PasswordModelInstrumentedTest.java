@@ -64,7 +64,7 @@ public class PasswordModelInstrumentedTest {
 
 
     @Test
-    public void testDeletePasswords(){
+    public void testDeletePasswords() throws Exception{
 
         assertEquals(Password.getTotalCount(), 0);
 
@@ -112,7 +112,7 @@ public class PasswordModelInstrumentedTest {
 
 
     @Test
-    public void testGet(){
+    public void testGet() throws Exception{
 
         assertEquals(Password.getTotalCount(), 0);
 
@@ -130,11 +130,23 @@ public class PasswordModelInstrumentedTest {
         cursor.close();
         assertEquals(count, 1);
 
+
+
+        try {
+            Password.get(1238723);
+            assertTrue(false);
+        }
+        catch(NoRecordFoundException e){
+            assertTrue(true);
+        }
+
+
+
     }
 
 
     @Test
-    public void testSave(){
+    public void testSave() throws Exception{
 
         assertEquals(Entry.getTotalCount(), 0);
 
@@ -160,7 +172,7 @@ public class PasswordModelInstrumentedTest {
 
 
     @Test
-    public void testDelete(){
+    public void testDelete() throws Exception{
 
         assertEquals(Password.getTotalCount(), 0);
 

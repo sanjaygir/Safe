@@ -53,7 +53,7 @@ public class Password extends ActiveRecord{
     }
 
 
-    public static Password first() throws Exception{
+    public static Password first() throws NoRecordFoundException{
 
         String [] columns = {SafeDbHelper.SQL_ID_COLUMN_NAME, SafeDbHelper.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME};
 
@@ -90,7 +90,7 @@ public class Password extends ActiveRecord{
     }
 
 
-    public static Password get(long id){
+    public static Password get(long id) throws NoRecordFoundException{
 
         String [] columns = {SafeDbHelper.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME};
 
@@ -101,6 +101,14 @@ public class Password extends ActiveRecord{
         Cursor cur = readableDatabase.query(SafeDbHelper.SQL_PASSWORD_TABLE_NAME, columns, selection, selectionArgs, null, null, null);
 
         cur.moveToFirst();
+
+        if(cur.getCount() == 0){
+
+            cur.close();
+            throw new NoRecordFoundException("The table was empty so it doesn't have any items");
+
+        }
+
 
         String password = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME));
 
