@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.kofhearts.safe.R;
 
@@ -29,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
         switch(item.getItemId()){
             case R.id.change_password:
-                Intent intent = new Intent(this, EntryListActivity.class);
+                Intent intent = new Intent(this, ChangePasswordActivity.class);
                 startActivity(intent);
                 return true;
         }
@@ -37,5 +38,12 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
+
+    public void handleLogin(View view){
+
+        Intent intent = new Intent(this, EntryListActivity.class);
+        startActivity(intent);
+
+    }
 
 }

@@ -15,11 +15,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presenter.ChangePasswordActivity" />
-        <activity android:name=".presenter.EntryListActivity" />
-        <activity android:name=".presenter.EntryViewActivity" />
-        <activity android:name=".presenter.NewEntryActivity" />
-        <activity android:name=".presenter.EditEntryActivity"></activity>
+        <activity android:name=".presenter.ChangePasswordActivity"
+            android:parentActivityName=".presenter.LoginActivity"
+            />
+        <activity android:name=".presenter.EntryListActivity"
+            android:parentActivityName=".presenter.LoginActivity"
+            />
+        <activity android:name=".presenter.EntryViewActivity"
+            android:parentActivityName=".presenter.EntryListActivity"
+            />
+        <activity android:name=".presenter.NewEntryActivity"
+            android:parentActivityName=".presenter.EntryListActivity"
+            />
+        <activity android:name=".presenter.EditEntryActivity"
+            android:parentActivityName=".presenter.EntryViewActivity"
+            ></activity>
     </application>
 
 </manifest>
