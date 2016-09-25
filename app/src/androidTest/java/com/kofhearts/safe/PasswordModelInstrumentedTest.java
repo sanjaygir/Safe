@@ -222,4 +222,43 @@ public class PasswordModelInstrumentedTest {
 
     }
 
+
+
+
+    @Test
+    public void testList(){
+
+        assertEquals(Password.getTotalCount(), 0);
+
+        long id1 = Password.create( "content1");
+        long id2 = Password.create( "content2");
+        long id3 = Password.create( "content3");
+        long id4 = Password.create( "content4");
+        long id5 = Password.create( "content5");
+
+        Password [] entries = Password.list();
+
+        assertEquals(entries.length, 5);
+
+        assertEquals(entries[0].getId(), id1);
+        assertEquals(entries[0].getPassword(), "content1");
+
+
+        assertEquals(entries[1].getId(), id2);
+        assertEquals(entries[1].getPassword(), "content2");
+
+        assertEquals(entries[2].getId(), id3);
+        assertEquals(entries[2].getPassword(), "content3");
+
+        assertEquals(entries[3].getId(), id4);
+        assertEquals(entries[3].getPassword(), "content4");
+
+        assertEquals(entries[4].getId(), id5);
+        assertEquals(entries[4].getPassword(), "content5");
+
+
+    }
+
+
+
 }

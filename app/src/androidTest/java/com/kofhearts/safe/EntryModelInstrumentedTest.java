@@ -4,15 +4,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+
 import com.kofhearts.safe.data.SafeDbHelperReal;
 import com.kofhearts.safe.data.SafeDbHelperTest;
 import com.kofhearts.safe.exception.NoRecordFoundException;
 import com.kofhearts.safe.model.ActiveRecord;
 import com.kofhearts.safe.model.Entry;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
@@ -185,7 +188,6 @@ public class EntryModelInstrumentedTest {
     }
 
 
-
     @Test
     public void testFirst() throws Exception{
 
@@ -228,6 +230,49 @@ public class EntryModelInstrumentedTest {
 
 
     }
+
+
+
+
+    @Test
+    public void testList(){
+
+        assertEquals(Entry.getTotalCount(), 0);
+
+        long id1 = Entry.create("title1", "content1");
+        long id2 = Entry.create("title2", "content2");
+        long id3 = Entry.create("title3", "content3");
+        long id4 = Entry.create("title4", "content4");
+        long id5 = Entry.create("title5", "content5");
+
+
+        Entry [] entries = Entry.list();
+
+        assertEquals(entries.length, 5);
+
+        assertEquals(entries[0].getId(), id1);
+        assertEquals(entries[0].getTitle(), "title1");
+        assertEquals(entries[0].getContent(), "content1");
+
+        assertEquals(entries[1].getId(), id2);
+        assertEquals(entries[1].getTitle(), "title2");
+        assertEquals(entries[1].getContent(), "content2");
+
+        assertEquals(entries[2].getId(), id3);
+        assertEquals(entries[2].getTitle(), "title3");
+        assertEquals(entries[2].getContent(), "content3");
+
+        assertEquals(entries[3].getId(), id4);
+        assertEquals(entries[3].getTitle(), "title4");
+        assertEquals(entries[3].getContent(), "content4");
+
+        assertEquals(entries[4].getId(), id5);
+        assertEquals(entries[4].getTitle(), "title5");
+        assertEquals(entries[4].getContent(), "content5");
+
+
+    }
+
 
 
 

@@ -136,5 +136,35 @@ public class Password extends ActiveRecord{
 
 
 
+    public static Password[] list(){
+
+        String [] columns = {SafeDbHelperReal.SQL_ID_COLUMN_NAME, SafeDbHelperReal.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME};
+
+        Cursor cur = readableDatabase.query(SafeDbHelperReal.SQL_PASSWORD_TABLE_NAME, columns, null, null, null, null, null);
+
+        cur.moveToFirst();
+
+        int size = cur.getCount();
+
+        Password [] entries = new Password[size];
+
+        for(int i=0; i<size; i++){
+
+            long id = cur.getLong(cur.getColumnIndex(SafeDbHelperReal.SQL_ID_COLUMN_NAME));
+            String password = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME));
+
+            entries[i] = new Password(id, password);
+
+            cur.moveToNext();
+
+        }
+
+        cur.close();
+
+        return entries;
+
+    }
+
+
 
 }

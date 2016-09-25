@@ -115,6 +115,40 @@ public class Entry extends ActiveRecord{
 
     }
 
+
+    public static Entry[] list(){
+
+        String [] columns = {SafeDbHelperReal.SQL_ID_COLUMN_NAME, SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
+
+
+        Cursor cur = readableDatabase.query(SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, columns, null, null, null, null, null);
+
+        cur.moveToFirst();
+
+        int size = cur.getCount();
+
+        Entry [] entries = new Entry[size];
+
+        for(int i=0; i<size; i++){
+
+            long id = cur.getLong(cur.getColumnIndex(SafeDbHelperReal.SQL_ID_COLUMN_NAME));
+            String title = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME));
+            String content = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME));
+
+
+            entries[i] = new Entry(id, title, content);
+
+            cur.moveToNext();
+
+        }
+
+        cur.close();
+
+        return entries;
+
+    }
+
+
     public static Entry first() throws Exception{
 
         String [] columns = {SafeDbHelperReal.SQL_ID_COLUMN_NAME, SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
