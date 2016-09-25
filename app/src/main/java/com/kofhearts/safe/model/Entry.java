@@ -1,41 +1,27 @@
 package com.kofhearts.safe.model;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
-import com.kofhearts.safe.data.SafeDbHelper;
+import com.kofhearts.safe.data.SafeDbHelperReal;
 
 /**
- * Created by Sanjay1 on 9/24/2016.
+ * Entry class is an entry with id, title and content
  */
 
-public class Entry {
+public class Entry extends ActiveRecord{
 
-    private static SafeDbHelper dbHelper;
-    private static SQLiteDatabase readableDatabase;
-    private static SQLiteDatabase writableDatabase;
-
-    private int id;
+    private long id;
     private String title;
     private String content;
 
-    public Entry(Context context, int id, String title, String content){
-
-        if(context != null) {
-            dbHelper = new SafeDbHelper(context);
-            readableDatabase = dbHelper.getReadableDatabase();
-            writableDatabase = dbHelper.getWritableDatabase();
-        }
+    public Entry(long id, String title, String content){
 
         this.id = id;
         this.title = title;
         this.content = content;
 
     }
-
-
 
     public String getTitle() {
         return title;
@@ -53,8 +39,7 @@ public class Entry {
         this.content = content;
     }
 
-
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -63,11 +48,18 @@ public class Entry {
     }
 
 
+    /**
+     *
+     * Gets the total Entry records
+     *
+     * @return Entry Total records in Entry table
+     *
+     */
+
+
     public static int getTotalCount(){
 
-
-
-        String countQuery = "SELECT * FROM " + SafeDbHelper.SQL_ENTRY_TABLE_NAME;
+        String countQuery = "SELECT * FROM " + SafeDbHelperReal.SQL_ENTRY_TABLE_NAME;
 
         Cursor cursor = readableDatabase.rawQuery(countQuery, null);
 
@@ -79,65 +71,69 @@ public class Entry {
 
     }
 
-    public static long createEntry(String title, String content){
+    public static long create(String title, String content){
 
         ContentValues values = new ContentValues();
 
-        values.put(SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, title);
-        values.put(SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME, content);
+        values.put(SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, title);
+        values.put(SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME, content);
 
 
-        return writableDatabase.insert(SafeDbHelper.SQL_ENTRY_TABLE_NAME, null, values);
+        return writableDatabase.insert(SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, null, values);
 
     }
 
-    public static Entry get(int id){
+    /**
+     *
+     * Gets the Entry record from database with given id.
+     *
+     * @param id Entry id of the Entry seeking to be taken out from database
+     * @return Entry record
+     *
+     *
+     */
 
-        String [] columns = {SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
+    public static Entry get(long id){
 
-        String selection = SafeDbHelper.SQL_ID_COLUMN_NAME + " = ?";
+        String [] columns = {SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
+
+        String selection = SafeDbHelperReal.SQL_ID_COLUMN_NAME + " = ?";
 
         String [] selectionArgs = {String.valueOf(id)};
 
-        Cursor cur = readableDatabase.query(SafeDbHelper.SQL_ENTRY_TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+        Cursor cur = readableDatabase.query(SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, columns, selection, selectionArgs, null, null, null);
 
         cur.moveToFirst();
 
-        String title = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME));
-        String content = cur.getString(cur.getColumnIndex(SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME));
+        String title = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME));
+        String content = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME));
 
         cur.close();
 
-        return new Entry(null, id, title, content);
+        return new Entry(id, title, content);
 
 
     }
 
     public int save(){
 
-
         ContentValues values = new ContentValues();
 
-        values.put(SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, this.title);
-        values.put(SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME, this.content);
+        values.put(SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, this.title);
+        values.put(SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME, this.content);
 
         String [] selectionArgs = {String.valueOf(this.id)};
 
-        return writableDatabase.update(SafeDbHelper.SQL_ENTRY_TABLE_NAME, values, SafeDbHelper.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
+        return writableDatabase.update(SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, values, SafeDbHelperReal.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
 
     }
-
 
     public int delete(){
 
         String [] selectionArgs = {String.valueOf(id)};
 
-        return writableDatabase.delete(SafeDbHelper.SQL_ENTRY_TABLE_NAME, SafeDbHelper.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
-
+        return writableDatabase.delete(SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, SafeDbHelperReal.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
 
     }
-
-
-
 
 }
