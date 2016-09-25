@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.kofhearts.safe.data.SafeDbHelperReal;
+import com.kofhearts.safe.exception.NoRecordFoundException;
 
 /**
  * Entry class is an entry with id, title and content
@@ -112,8 +113,33 @@ public class Entry extends ActiveRecord{
 
         return new Entry(id, title, content);
 
+    }
+
+    public static Entry first() throws Exception{
+
+        String [] columns = {SafeDbHelperReal.SQL_ID_COLUMN_NAME, SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
+
+        Cursor cur = readableDatabase.query(SafeDbHelperReal.SQL_ENTRY_TABLE_NAME, columns, null, null,null,null,"1");
+
+        cur.moveToFirst();
+
+        if(cur.getCount() == 0){
+
+            cur.close();
+            throw new NoRecordFoundException("The table was empty so it doesn't have any items");
+
+        }
+
+        long id = cur.getLong(cur.getColumnIndex(SafeDbHelperReal.SQL_ID_COLUMN_NAME));
+        String title = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME));
+        String content = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME));
+
+        cur.close();
+
+        return new Entry(id, title, content);
 
     }
+
 
     public int save(){
 

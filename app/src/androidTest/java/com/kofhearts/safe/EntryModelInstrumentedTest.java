@@ -4,18 +4,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-
 import com.kofhearts.safe.data.SafeDbHelperReal;
 import com.kofhearts.safe.data.SafeDbHelperTest;
+import com.kofhearts.safe.exception.NoRecordFoundException;
 import com.kofhearts.safe.model.ActiveRecord;
 import com.kofhearts.safe.model.Entry;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 
 /**
  * Instrumentation test, which will execute on an Android device.
@@ -24,8 +24,6 @@ import static junit.framework.Assert.assertEquals;
  */
 @RunWith(AndroidJUnit4.class)
 public class EntryModelInstrumentedTest {
-
-
 
     @Before
     public void setUp(){
@@ -36,7 +34,6 @@ public class EntryModelInstrumentedTest {
 
         ActiveRecord.initialize(appContext, true);
 
-
     }
 
     @After
@@ -46,8 +43,6 @@ public class EntryModelInstrumentedTest {
         appContext.deleteDatabase(SafeDbHelperTest.DATABASE_NAME);
 
     }
-
-
 
 
     @Test
@@ -190,6 +185,49 @@ public class EntryModelInstrumentedTest {
     }
 
 
+
+    @Test
+    public void testFirst() throws Exception{
+
+        assertEquals(Entry.getTotalCount(), 0);
+
+        long id1 = Entry.create("title1", "content1");
+        long id2 = Entry.create("title2", "content2");
+        long id3 = Entry.create("title3", "content3");
+        long id4 = Entry.create("title4", "content4");
+        long id5 = Entry.create("title5", "content5");
+
+        Entry ent = Entry.first();
+
+        assertEquals(ent.getId(), id1);
+        assertEquals(ent.getTitle(), "title1");
+        assertEquals(ent.getContent(), "content1");
+
+        Entry.get(id1).delete();
+
+        ent = Entry.first();
+
+        assertEquals(ent.getId(), id2);
+        assertEquals(ent.getTitle(), "title2");
+        assertEquals(ent.getContent(), "content2");
+
+
+        Entry.get(id2).delete();
+        Entry.get(id3).delete();
+        Entry.get(id4).delete();
+        Entry.get(id5).delete();
+
+
+        try {
+            ent = Entry.first();
+            assertTrue(false);
+        }
+        catch (NoRecordFoundException e){
+            assertTrue(true);
+        }
+
+
+    }
 
 
 

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.kofhearts.safe.data.SafeDbHelperReal;
+import com.kofhearts.safe.exception.NoRecordFoundException;
 
 /**
  * Created by Sanjay1 on 9/25/2016.
@@ -37,7 +38,6 @@ public class Password extends ActiveRecord{
     }
 
 
-
     public static int getTotalCount(){
 
         String countQuery = "SELECT * FROM " + SafeDbHelperReal.SQL_PASSWORD_TABLE_NAME;
@@ -49,6 +49,32 @@ public class Password extends ActiveRecord{
         cursor.close();
 
         return count;
+
+    }
+
+
+    public static Password first() throws Exception{
+
+        String [] columns = {SafeDbHelperReal.SQL_ID_COLUMN_NAME, SafeDbHelperReal.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME};
+
+        Cursor cur = readableDatabase.query(SafeDbHelperReal.SQL_PASSWORD_TABLE_NAME, columns, null, null,null,null,"1");
+
+        cur.moveToFirst();
+
+        if(cur.getCount() == 0){
+
+            cur.close();
+            throw new NoRecordFoundException("The table was empty so it doesn't have any items");
+
+        }
+
+
+        long id = cur.getLong(cur.getColumnIndex(SafeDbHelperReal.SQL_ID_COLUMN_NAME));
+        String password = cur.getString(cur.getColumnIndex(SafeDbHelperReal.SQL_PASSWORD_TABLE_PASSWORD_COLUMN_NAME));
+
+        cur.close();
+
+        return new Password(id, password);
 
     }
 

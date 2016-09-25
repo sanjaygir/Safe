@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.kofhearts.safe.data.SafeDbHelperReal;
 import com.kofhearts.safe.data.SafeDbHelperTest;
+import com.kofhearts.safe.exception.NoRecordFoundException;
 import com.kofhearts.safe.model.ActiveRecord;
 import com.kofhearts.safe.model.Entry;
 import com.kofhearts.safe.model.Password;
@@ -17,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by Sanjay1 on 9/25/2016.
@@ -175,6 +177,48 @@ public class PasswordModelInstrumentedTest {
         int count = cursor.getCount();
         cursor.close();
         assertEquals(count, 0);
+
+    }
+
+
+    @Test
+    public void testFirst() throws Exception{
+
+        assertEquals(Password.getTotalCount(), 0);
+
+        long id1 = Password.create("content1");
+        long id2 = Password.create("content2");
+        long id3 = Password.create("content3");
+        long id4 = Password.create("content4");
+        long id5 = Password.create("content5");
+
+        Password ent = Password.first();
+
+        assertEquals(ent.getId(), id1);
+        assertEquals(ent.getPassword(), "content1");
+
+        Password.get(id1).delete();
+
+        ent = Password.first();
+
+        assertEquals(ent.getId(), id2);
+        assertEquals(ent.getPassword(), "content2");
+
+
+        Password.get(id2).delete();
+        Password.get(id3).delete();
+        Password.get(id4).delete();
+        Password.get(id5).delete();
+
+
+        try {
+            ent = Password.first();
+            assertTrue(false);
+        }
+        catch (NoRecordFoundException e){
+            assertTrue(true);
+        }
+
 
     }
 

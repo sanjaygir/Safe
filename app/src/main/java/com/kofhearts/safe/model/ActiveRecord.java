@@ -8,7 +8,9 @@ import com.kofhearts.safe.data.SafeDbHelperReal;
 import com.kofhearts.safe.data.SafeDbHelperTest;
 
 /**
- * Created by Sanjay1 on 9/25/2016.
+ *
+ * Base class for all models.
+ *
  */
 
 public abstract class ActiveRecord {
@@ -23,7 +25,6 @@ public abstract class ActiveRecord {
         return readableDatabase;
 
     }
-
 
 
     public static void initialize(Context context, boolean test){
@@ -51,6 +52,9 @@ public abstract class ActiveRecord {
         }
 
     }
+
+
+
 
 
 }
