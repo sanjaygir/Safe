@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
         switch(item.getItemId()){
             case R.id.change_password:
-                Intent intent = new Intent(this, EditEntryActivity.class);
+                Intent intent = new Intent(this, EntryListActivity.class);
                 startActivity(intent);
                 return true;
         }
