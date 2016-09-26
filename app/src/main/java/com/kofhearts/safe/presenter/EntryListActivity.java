@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.kofhearts.safe.R;
+import com.kofhearts.safe.model.ActiveRecord;
+import com.kofhearts.safe.model.Entry;
 
 public class EntryListActivity extends AppCompatActivity {
 
@@ -38,13 +40,23 @@ public class EntryListActivity extends AppCompatActivity {
         actionBar.setCustomView(R.layout.entry_list_search);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
 
-        String [] entries = {"a", "asd", "qwe", "erty", "fgh"};
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_list_view_item, entries);
+        ActiveRecord.initialize(this, false);
+
+
+        Entry[] entries = Entry.list();
+
+        String [] ents = new String[entries.length];
+
+
+        for(int i=0; i<entries.length; i++){
+            ents[i] = entries[i].getTitle();
+        }
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_list_view_item, ents);
 
         ListView listView = (ListView) findViewById(R.id.entry_list);
         listView.setAdapter(adapter);
-
 
 
         listView.setOnItemClickListener(entryClickedHandler);
