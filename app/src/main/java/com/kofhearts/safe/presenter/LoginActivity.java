@@ -42,6 +42,17 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+
+    /**
+     *
+     * Add logic to handle when Change Password was clicked.
+     *
+     * @param item Menu item that was clicked.
+     * @return Boolean
+     */
+
+
+
     public boolean onOptionsItemSelected(MenuItem item){
 
         switch(item.getItemId()){

@@ -31,15 +31,14 @@ public class EntryViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_view);
 
-
         ActiveRecord.initialize(this, false);
-
-
 
         if(getIntent().getExtras() != null) {
             entryId = getIntent().getExtras().getLong("id");
         }
 
+
+        //Fetch the Entry to display.
 
         TextView title = (TextView) findViewById(R.id.title_view);
         TextView content = (TextView) findViewById(R.id.content_view);
@@ -60,6 +59,16 @@ public class EntryViewActivity extends AppCompatActivity {
         }
 
     }
+
+
+    /**
+     *
+     * When entry view page is navigated back after edit entry then the id of entry is retrieved back to display the entry belonging to that id.
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data Intent data passed back
+     */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -100,6 +109,14 @@ public class EntryViewActivity extends AppCompatActivity {
         inflater.inflate(R.menu.entry_view_menu, menu);
         return true;
     }
+
+    /**
+     *
+     * Add logic to handle when Edit Entry and Delete is clicked on Entry View page.
+     *
+     * @param item Menu item that was clicked.
+     * @return Boolean
+     */
 
 
     public boolean onOptionsItemSelected(MenuItem item){

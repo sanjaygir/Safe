@@ -90,6 +90,14 @@ public class EntryListActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     *
+     * Initialize list and add search text change listener so that the list updates based on string typed in search box
+     *
+     * @param savedInstanceState
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +114,6 @@ public class EntryListActivity extends AppCompatActivity {
         initializeList();
 
 
-
         EditText search = (EditText)findViewById(R.id.search);
 
         search.addTextChangedListener(new TextWatcher() {
@@ -118,61 +125,7 @@ public class EntryListActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-
-                Entry[] entries = Entry.list();
-
-                List<Long> ids = new ArrayList<Long>();
-
-                for(Entry e: entries){
-
-                    if (e.getTitle().toLowerCase().contains(charSequence.toString().toLowerCase()) ||
-                            e.getContent().toLowerCase().contains(charSequence.toString().toLowerCase())
-                            ){
-
-                        ids.add(e.getId());
-
-                    }
-
-                }
-
-
-
-                Entry[] newEntries = new Entry[ids.size()];
-
-                for(int j=0; j<ids.size(); j++){
-
-                    try {
-
-                        newEntries[j] = Entry.get(ids.get(j));
-
-                    }
-                    catch (NoRecordFoundException e){
-
-                    }
-
-                }
-
-
-
-                entryTitles = new String[newEntries.length];
-                entryIds = new long[newEntries.length];
-
-                for(int k=0; k<newEntries.length; k++){
-
-                        entryTitles[k] = newEntries[k].getTitle();
-                        entryIds[k] = newEntries[k].getId();
-
-
-                }
-
-
-                ArrayAdapter adapter = new ArrayAdapter<String>(EntryListActivity.this, R.layout.activity_list_view_item, entryTitles);
-
-                ListView listView = (ListView) findViewById(R.id.entry_list);
-                listView.setAdapter(adapter);
-
-                ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
-
+                filterSearch(charSequence);
 
             }
 
@@ -182,10 +135,8 @@ public class EntryListActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
+
 
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -211,5 +162,68 @@ public class EntryListActivity extends AppCompatActivity {
         return true;
     }
 
+
+    /**
+     *
+     * Private method to update list based on characters in search box
+     *
+     * @param charSequence characters so far typed by user in search box
+     */
+
+    private void filterSearch(CharSequence charSequence){
+
+        Entry[] entries = Entry.list();
+
+        List<Long> ids = new ArrayList<Long>();
+
+        for(Entry e: entries){
+
+            if (e.getTitle().toLowerCase().contains(charSequence.toString().toLowerCase()) ||
+                    e.getContent().toLowerCase().contains(charSequence.toString().toLowerCase())
+                    ){
+
+                ids.add(e.getId());
+
+            }
+
+        }
+
+
+        Entry[] newEntries = new Entry[ids.size()];
+
+        for(int j=0; j<ids.size(); j++){
+
+            try {
+
+                newEntries[j] = Entry.get(ids.get(j));
+
+            }
+            catch (NoRecordFoundException e){
+
+            }
+
+        }
+
+
+        entryTitles = new String[newEntries.length];
+        entryIds = new long[newEntries.length];
+
+        for(int k=0; k<newEntries.length; k++){
+
+            entryTitles[k] = newEntries[k].getTitle();
+            entryIds[k] = newEntries[k].getId();
+
+        }
+
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(EntryListActivity.this, R.layout.activity_list_view_item, entryTitles);
+
+        ListView listView = (ListView) findViewById(R.id.entry_list);
+        listView.setAdapter(adapter);
+
+        ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
+
+
+    }
 
 }
