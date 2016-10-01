@@ -7,7 +7,8 @@ import com.kofhearts.safe.data.SafeDbHelper;
 import com.kofhearts.safe.exception.NoRecordFoundException;
 
 /**
- * Entry class is an entry with id, title and content
+ * Entry class represents an entry that is defined by three properties namely id, title and content. For example: An entry can be a bank account information in which case
+ * the title can be Bank Account Number and content can be 123812673
  */
 
 public class Entry extends ActiveRecord{
@@ -73,6 +74,16 @@ public class Entry extends ActiveRecord{
 
     }
 
+
+    /**
+     *
+     * Method to create a new Entry record in database.
+     *
+     * @param title Title of Entry
+     * @param content Contents of Entry
+     * @return id of the Entry record in database
+     */
+
     public static long create(String title, String content){
 
         ContentValues values = new ContentValues();
@@ -85,6 +96,7 @@ public class Entry extends ActiveRecord{
 
     }
 
+
     /**
      *
      * Gets the Entry record from database with given id.
@@ -92,7 +104,7 @@ public class Entry extends ActiveRecord{
      * @param id Entry id of the Entry seeking to be taken out from database
      * @return Entry record
      *
-     *
+     * @exception NoRecordFoundException If a record doesn't exist in database with given id then this exception is thrown.
      */
 
     public static Entry get(long id) throws NoRecordFoundException{
@@ -125,6 +137,14 @@ public class Entry extends ActiveRecord{
 
     }
 
+
+    /**
+     *
+     * Fetches all Entry records from database.
+     *
+     *
+     * @return A list or array of entries
+     */
 
     public static Entry[] list(){
 
@@ -159,6 +179,14 @@ public class Entry extends ActiveRecord{
     }
 
 
+    /**
+     *
+     * Fetches the first Entry record from database.
+     *
+     * @return Fetched Entry record
+     * @throws NoRecordFoundException If there are no entry records then this exception is thrown.
+     */
+
     public static Entry first() throws NoRecordFoundException{
 
         String [] columns = {SafeDbHelper.SQL_ID_COLUMN_NAME, SafeDbHelper.SQL_ENTRY_TABLE_TITLE_COLUMN_NAME, SafeDbHelper.SQL_ENTRY_TABLE_CONTENT_COLUMN_NAME};
@@ -185,6 +213,13 @@ public class Entry extends ActiveRecord{
     }
 
 
+    /**
+     *Saves the Entry record in database. This is normally called when an Entry record is fetched from database and then updated.
+     *
+     *
+     * @return Number representing number of rows affected or updated.
+     */
+
     public int save(){
 
         ContentValues values = new ContentValues();
@@ -197,6 +232,13 @@ public class Entry extends ActiveRecord{
         return writableDatabase.update(SafeDbHelper.SQL_ENTRY_TABLE_NAME, values, SafeDbHelper.SQL_ID_COLUMN_NAME + " = ?", selectionArgs);
 
     }
+
+    /**
+     *
+     *Deletes the Entry record from the database. Normally this method is called after an Entry is fetched from the database. Example usage: Entry.get(1).delete()
+     *
+     * @return Number representing number of rows affected or deleted.
+     */
 
     public int delete(){
 

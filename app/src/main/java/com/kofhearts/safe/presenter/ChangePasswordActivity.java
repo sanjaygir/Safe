@@ -3,6 +3,9 @@ package com.kofhearts.safe.presenter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -11,6 +14,14 @@ import com.kofhearts.safe.R;
 import com.kofhearts.safe.exception.NoRecordFoundException;
 import com.kofhearts.safe.model.ActiveRecord;
 import com.kofhearts.safe.model.Password;
+
+
+/**
+ *
+ * Represents Change Password Screen.
+ *
+ */
+
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
@@ -25,8 +36,51 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
 
 
-    public void handleChangePassword(View view){
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.change_password_menu, menu);
+        return true;
+    }
 
+    /**
+     *
+     * Handles menu click. Handles the case when user clicks on Forgot Password. A toast message is displayed that shows the hint.
+     *
+     * @param item Menu item clicked
+     * @return Boolean
+     */
+
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        switch(item.getItemId()){
+            case R.id.forgot_password:
+
+                try {
+
+                    Toast.makeText(this, "Hint: " + Password.first().getHint() , Toast.LENGTH_LONG).show();
+
+                }
+                catch(NoRecordFoundException e){
+
+                    Toast.makeText(this, "No email found!", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
+
+                return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Changes the old password.
+     *
+     * @param view View
+     */
+
+    public void handleChangePassword(View view){
 
 
         EditText oldPassword = (EditText) findViewById(R.id.old_password);
@@ -35,65 +89,44 @@ public class ChangePasswordActivity extends AppCompatActivity {
         EditText newPassword = (EditText) findViewById(R.id.new_password);
         String news = newPassword.getText().toString();
 
-
-        if(Password.getTotalCount() == 0){
-
-            //First time so create the password
-
-            Log.w("asd", "here");
-
-            Password.create(news);
+        EditText hint = (EditText) findViewById(R.id.change_hint);
+        String hin = hint.getText().toString();
 
 
-            Toast toast = Toast.makeText(this, "New Password Set", Toast.LENGTH_SHORT);
-            toast.show();
+        Log.w("count", String.valueOf(Password.getTotalCount()));
+        //Changing an existing password
 
-        }
-        else{
+        try {
 
+            String oldFromDatabase = Password.first().getPassword();
 
-            Log.w("count", String.valueOf(Password.getTotalCount()));
-            //Changing an existing password
+            if(oldFromDatabase.equals(olds) && !news.isEmpty()){
 
-            try {
+                Password pa = Password.first();
+                pa.setPassword(news);
+                pa.setHint(hin);
 
-                String oldFromDatabase = Password.first().getPassword();
+                pa.save();
 
-                if(oldFromDatabase.equals(olds) && !news.isEmpty()){
-
-                    Password.first().delete();
-
-                    Password.create(news);
-
-
-
-                    Toast toast = Toast.makeText(this, "Password changed successfully!", Toast.LENGTH_SHORT);
-                    toast.show();
-
-                }
-                else{
-
-                    Toast toast = Toast.makeText(this, "Wrong Password!", Toast.LENGTH_SHORT);
-                    toast.show();
-
-
-                }
-
+                Toast toast = Toast.makeText(this, "Password changed successfully!", Toast.LENGTH_SHORT);
+                toast.show();
 
             }
-            catch (NoRecordFoundException e){
+            else{
 
-
-                Log.e("ChangePasswordActivity",  "Error when changing password");
+                Toast toast = Toast.makeText(this, "Wrong Password!", Toast.LENGTH_SHORT);
+                toast.show();
 
             }
 
 
         }
+        catch (NoRecordFoundException e){
 
 
+            Log.e("ChangePasswordActivity",  "Error when changing password");
 
-
+        }
 
 
 

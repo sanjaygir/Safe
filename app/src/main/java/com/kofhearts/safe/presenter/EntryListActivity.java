@@ -4,19 +4,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.kofhearts.safe.R;
+import com.kofhearts.safe.exception.NoRecordFoundException;
 import com.kofhearts.safe.model.ActiveRecord;
 import com.kofhearts.safe.model.Entry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EntryListActivity extends AppCompatActivity {
+
+
+    private String [] entryTitles;
+    private long [] entryIds;
 
 
     // Create a message handling object as an anonymous class.
@@ -25,11 +37,49 @@ public class EntryListActivity extends AppCompatActivity {
             // Do something in response to the click
 
             Intent intent = new Intent(v.getContext(), EntryViewActivity.class);
+            intent.putExtra("id", entryIds[position]);
+
+
             startActivity(intent);
 
         }
     };
 
+
+    /**
+     *
+     * Initializes the list that will hold the items displayed by list view.
+     *
+     */
+
+
+    public void initializeList(){
+
+
+        Entry[] entries = Entry.list();
+
+
+        entryTitles = new String[entries.length];
+        entryIds = new long[entries.length];
+
+        for(int i=0; i<entries.length; i++){
+            entryTitles[i] = entries[i].getTitle();
+            entryIds[i] = entries[i].getId();
+
+        }
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_list_view_item, entryTitles);
+
+        ListView listView = (ListView) findViewById(R.id.entry_list);
+        listView.setAdapter(adapter);
+
+
+
+        listView.setOnItemClickListener(entryClickedHandler);
+
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,22 +94,86 @@ public class EntryListActivity extends AppCompatActivity {
         ActiveRecord.initialize(this, false);
 
 
-        Entry[] entries = Entry.list();
-
-        String [] ents = new String[entries.length];
+        initializeList();
 
 
-        for(int i=0; i<entries.length; i++){
-            ents[i] = entries[i].getTitle();
-        }
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_list_view_item, ents);
+        EditText search = (EditText)findViewById(R.id.search);
 
-        ListView listView = (ListView) findViewById(R.id.entry_list);
-        listView.setAdapter(adapter);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
 
-        listView.setOnItemClickListener(entryClickedHandler);
+                Entry[] entries = Entry.list();
+
+                List<Long> ids = new ArrayList<Long>();
+
+                for(Entry e: entries){
+
+                    if (e.getTitle().toLowerCase().contains(charSequence.toString().toLowerCase()) ||
+                            e.getContent().toLowerCase().contains(charSequence.toString().toLowerCase())
+                            ){
+
+                        ids.add(e.getId());
+
+                    }
+
+                }
+
+
+
+                Entry[] newEntries = new Entry[ids.size()];
+
+                for(int j=0; j<ids.size(); j++){
+
+                    try {
+
+                        newEntries[j] = Entry.get(ids.get(j));
+
+                    }
+                    catch (NoRecordFoundException e){
+
+                    }
+
+                }
+
+
+
+                entryTitles = new String[newEntries.length];
+                entryIds = new long[newEntries.length];
+
+                for(int k=0; k<newEntries.length; k++){
+
+                        entryTitles[k] = newEntries[k].getTitle();
+                        entryIds[k] = newEntries[k].getId();
+
+
+                }
+
+
+                ArrayAdapter adapter = new ArrayAdapter<String>(EntryListActivity.this, R.layout.activity_list_view_item, entryTitles);
+
+                ListView listView = (ListView) findViewById(R.id.entry_list);
+                listView.setAdapter(adapter);
+
+                ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
 
 
     }

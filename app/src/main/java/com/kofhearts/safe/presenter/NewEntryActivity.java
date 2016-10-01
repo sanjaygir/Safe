@@ -21,6 +21,13 @@ public class NewEntryActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * Saves the new entry.
+     *
+     * @param view
+     */
+
     public void handleSave(View view){
 
         EditText title = (EditText)findViewById(R.id.title);

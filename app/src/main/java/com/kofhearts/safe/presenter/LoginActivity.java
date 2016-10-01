@@ -37,14 +37,33 @@ public class LoginActivity extends AppCompatActivity {
 
         switch(item.getItemId()){
             case R.id.change_password:
-                Intent intent = new Intent(this, ChangePasswordActivity.class);
-                startActivity(intent);
-                return true;
+
+                if(Password.getTotalCount() == 0){
+
+                    Intent intent = new Intent(this, FirstTimeAccountSetupActivity.class);
+                    startActivity(intent);
+                    return true;
+
+                }
+                else{
+
+                    Intent intent = new Intent(this, ChangePasswordActivity.class);
+                    startActivity(intent);
+                    return true;
+
+                }
+
         }
 
         return false;
     }
 
+
+    /**
+     * Handles user login
+     *
+     * @param view
+     */
 
     public void handleLogin(View view){
 

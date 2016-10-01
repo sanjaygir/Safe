@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:inputType="textFilter"
     android:hint="Search"
+    android:textSize="20sp"
     >
 
 </EditText>

@@ -1,7 +1,7 @@
 package com.kofhearts.safe.exception;
 
 /**
- * Created by Sanjay1 on 9/25/2016.
+ * Exception to represent no record found in database
  */
 
 public class NoRecordFoundException extends Exception {
