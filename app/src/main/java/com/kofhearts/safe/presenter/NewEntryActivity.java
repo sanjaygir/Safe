@@ -10,6 +10,15 @@ import com.kofhearts.safe.R;
 import com.kofhearts.safe.model.ActiveRecord;
 import com.kofhearts.safe.model.Entry;
 
+
+
+/**
+ *
+ * Represents Create New Entry Screen.
+ *
+ */
+
+
 public class NewEntryActivity extends AppCompatActivity {
 
     @Override

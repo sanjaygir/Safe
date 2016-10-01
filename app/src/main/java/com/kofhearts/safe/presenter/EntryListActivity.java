@@ -24,6 +24,15 @@ import com.kofhearts.safe.model.Entry;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+/**
+ *
+ * Represents Entry List Screen.
+ *
+ */
+
+
 public class EntryListActivity extends AppCompatActivity {
 
 

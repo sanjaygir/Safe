@@ -15,6 +15,15 @@ import com.kofhearts.safe.exception.NoRecordFoundException;
 import com.kofhearts.safe.model.ActiveRecord;
 import com.kofhearts.safe.model.Password;
 
+
+
+/**
+ *
+ * Represents Login Screen.
+ *
+ */
+
+
 public class LoginActivity extends AppCompatActivity {
 
     @Override

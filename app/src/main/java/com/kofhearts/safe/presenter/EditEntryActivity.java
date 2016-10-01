@@ -13,6 +13,16 @@ import com.kofhearts.safe.exception.NoRecordFoundException;
 import com.kofhearts.safe.model.ActiveRecord;
 import com.kofhearts.safe.model.Entry;
 
+
+
+
+/**
+ *
+ * Represents Edit Entry Screen.
+ *
+ */
+
+
 public class EditEntryActivity extends AppCompatActivity {
 
     private long entryId;

@@ -9,6 +9,15 @@ import android.widget.Toast;
 import com.kofhearts.safe.R;
 import com.kofhearts.safe.model.Password;
 
+
+
+/**
+ *
+ * Represents Account Setup Screen.
+ *
+ */
+
+
 public class FirstTimeAccountSetupActivity extends AppCompatActivity {
 
     @Override
