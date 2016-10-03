@@ -21,10 +21,11 @@
         />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:id="@+id/first_time_password"
         android:textSize="20sp"
+        android:inputType="textPassword"
         />
 
 
@@ -44,7 +45,7 @@
         />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:id="@+id/hint"
         android:textSize="20sp"

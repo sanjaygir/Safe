@@ -1,5 +1,6 @@
 package com.kofhearts.safe.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -40,19 +41,30 @@ public class EntryListActivity extends AppCompatActivity {
     private long [] entryIds;
 
 
-    // Create a message handling object as an anonymous class.
-    private AdapterView.OnItemClickListener entryClickedHandler = new AdapterView.OnItemClickListener() {
-        public void onItemClick(AdapterView parent, View v, int position, long id) {
-            // Do something in response to the click
 
-            Intent intent = new Intent(v.getContext(), EntryViewActivity.class);
-            intent.putExtra("id", entryIds[position]);
+    /**
+     * When the requested activity finishes the list is initialized so that to reflect the new change in the list.
+     *
+     * @param requestCode Request code
+     * @param resultCode Response code. Normally RESULT_OK if the result is fine.
+     * @param data Intent passed back by the requested activity
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
 
 
-            startActivity(intent);
+        if (requestCode == 1 || requestCode == 2) {
+            if (resultCode == Activity.RESULT_OK) {
 
+                initializeList();
+
+            }
         }
-    };
+
+
+    }
 
 
     /**
@@ -102,6 +114,8 @@ public class EntryListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_list);
+
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setCustomView(R.layout.entry_list_search);
@@ -153,7 +167,7 @@ public class EntryListActivity extends AppCompatActivity {
             case R.id.new_entry:
 
                 Intent intent = new Intent(this, NewEntryActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 2);
                 return true;
 
 
@@ -225,5 +239,22 @@ public class EntryListActivity extends AppCompatActivity {
 
 
     }
+
+
+
+    // Create a message handling object as an anonymous class.
+    private AdapterView.OnItemClickListener entryClickedHandler = new AdapterView.OnItemClickListener() {
+        public void onItemClick(AdapterView parent, View v, int position, long id) {
+            // Do something in response to the click
+
+            Intent intent = new Intent(v.getContext(), EntryViewActivity.class);
+            intent.putExtra("id", entryIds[position]);
+
+            startActivityForResult(intent, 1);
+
+        }
+    };
+
+
 
 }

@@ -38,10 +38,8 @@ public class FirstTimeAccountSetupActivity extends AppCompatActivity {
 
         //First time so create the password
 
-
         EditText firstPassword = (EditText) findViewById(R.id.first_time_password);
         String pa = firstPassword.getText().toString();
-
 
         EditText hint = (EditText) findViewById(R.id.hint);
         String hi = hint.getText().toString();
@@ -50,6 +48,8 @@ public class FirstTimeAccountSetupActivity extends AppCompatActivity {
 
         Toast toast = Toast.makeText(this, "New Password Set", Toast.LENGTH_SHORT);
         toast.show();
+
+        super.onBackPressed();
 
 
     }

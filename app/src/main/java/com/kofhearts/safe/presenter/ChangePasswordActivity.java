@@ -93,9 +93,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         String hin = hint.getText().toString();
 
 
-        Log.w("count", String.valueOf(Password.getTotalCount()));
-        //Changing an existing password
-
         try {
 
             String oldFromDatabase = Password.first().getPassword();
@@ -110,6 +107,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                 Toast toast = Toast.makeText(this, "Password changed successfully!", Toast.LENGTH_SHORT);
                 toast.show();
+
+                super.onBackPressed();
 
             }
             else{

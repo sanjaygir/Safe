@@ -25,7 +25,9 @@
         android:layout_height="wrap_content"
         android:hint="Title"
         android:inputType="text"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:maxLength="30"
+        />
 
 
     <TextView

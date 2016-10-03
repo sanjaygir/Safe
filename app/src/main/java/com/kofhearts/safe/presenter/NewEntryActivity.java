@@ -1,5 +1,7 @@
 package com.kofhearts.safe.presenter;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -49,6 +51,12 @@ public class NewEntryActivity extends AppCompatActivity {
 
         Toast toast = Toast.makeText(this, "Entry saved!", Toast.LENGTH_SHORT);
         toast.show();
+
+
+        Intent intent = new Intent();
+        setResult(Activity.RESULT_OK, intent);
+
+        super.onBackPressed();
 
 
 

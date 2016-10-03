@@ -1,5 +1,6 @@
 package com.kofhearts.safe.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -38,25 +39,7 @@ public class EntryViewActivity extends AppCompatActivity {
         }
 
 
-        //Fetch the Entry to display.
-
-        TextView title = (TextView) findViewById(R.id.title_view);
-        TextView content = (TextView) findViewById(R.id.content_view);
-
-
-
-        try {
-            Entry entry = Entry.get(entryId);
-
-            title.setText(entry.getTitle());
-            content.setText(entry.getContent());
-        }
-        catch(NoRecordFoundException e){
-
-            Toast toast = Toast.makeText(this, "No record to show!", Toast.LENGTH_SHORT);
-            toast.show();
-
-        }
+        displayEntry();
 
     }
 
@@ -77,10 +60,9 @@ public class EntryViewActivity extends AppCompatActivity {
 
 
         if (requestCode == 1) {
-            if(resultCode == 1) {
+            if(resultCode == Activity.RESULT_OK) {
                 long id =data.getExtras().getLong("id");
                 //mTextView.setText(myStr);
-
 
                 TextView title = (TextView) findViewById(R.id.title_view);
                 TextView content = (TextView) findViewById(R.id.content_view);
@@ -135,6 +117,19 @@ public class EntryViewActivity extends AppCompatActivity {
 
                     Toast toast = Toast.makeText(this, "Entry deleted successfully!", Toast.LENGTH_SHORT);
                     toast.show();
+
+                    Intent intent2 = new Intent();
+                    intent2.putExtra("id", entryId);
+                    setResult(Activity.RESULT_OK, intent2);
+
+                    super.onBackPressed();
+
+
+
+
+
+
+
                 }
                 catch(NoRecordFoundException e){
 
@@ -148,6 +143,35 @@ public class EntryViewActivity extends AppCompatActivity {
 
         return false;
     }
+
+
+
+    private void displayEntry(){
+
+
+        //Fetch the Entry to display.
+
+        TextView title = (TextView) findViewById(R.id.title_view);
+        TextView content = (TextView) findViewById(R.id.content_view);
+
+
+
+        try {
+            Entry entry = Entry.get(entryId);
+
+            title.setText(entry.getTitle());
+            content.setText(entry.getContent());
+        }
+        catch(NoRecordFoundException e){
+
+            Toast toast = Toast.makeText(this, "No record to show!", Toast.LENGTH_SHORT);
+            toast.show();
+
+        }
+
+
+    }
+
 
 
 }

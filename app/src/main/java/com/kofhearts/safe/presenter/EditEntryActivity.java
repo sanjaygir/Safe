@@ -1,5 +1,6 @@
 package com.kofhearts.safe.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +13,6 @@ import com.kofhearts.safe.R;
 import com.kofhearts.safe.exception.NoRecordFoundException;
 import com.kofhearts.safe.model.ActiveRecord;
 import com.kofhearts.safe.model.Entry;
-
-
 
 
 /**
@@ -39,26 +38,13 @@ public class EditEntryActivity extends AppCompatActivity {
         entryId = getIntent().getExtras().getLong("id");
 
 
+        //Passing id of this entry to requester activity
         Intent intent = new Intent();
         intent.putExtra("id", entryId);
-        setResult(1, intent);
+        setResult(Activity.RESULT_OK, intent);
 
 
-        EditText title = (EditText) findViewById(R.id.title_edit);
-        EditText content = (EditText) findViewById(R.id.content_edit);
-
-        try {
-            Entry entry = Entry.get(entryId);
-
-            title.setText(entry.getTitle());
-            content.setText(entry.getContent());
-        }
-        catch(NoRecordFoundException e){
-
-            Toast toast = Toast.makeText(this, "No record to show!", Toast.LENGTH_SHORT);
-            toast.show();
-
-        }
+        setEntryInView();
 
     }
 
@@ -102,6 +88,9 @@ public class EditEntryActivity extends AppCompatActivity {
             toast.show();
 
 
+            super.onBackPressed();
+
+
         }
         catch (NoRecordFoundException e){
 
@@ -114,4 +103,30 @@ public class EditEntryActivity extends AppCompatActivity {
 
 
     }
+
+
+
+
+
+    private void setEntryInView(){
+
+        EditText title = (EditText) findViewById(R.id.title_edit);
+        EditText content = (EditText) findViewById(R.id.content_edit);
+
+        try {
+            Entry entry = Entry.get(entryId);
+
+            title.setText(entry.getTitle());
+            content.setText(entry.getContent());
+        }
+        catch(NoRecordFoundException e){
+
+            Toast toast = Toast.makeText(this, "No record to show!", Toast.LENGTH_SHORT);
+            toast.show();
+
+        }
+
+    }
+
+
 }
